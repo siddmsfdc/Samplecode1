@@ -1,0 +1,289 @@
+<template>
+  <template if:true={budgetAllInfoRec} >   
+      <template if:true={isLoading}>
+        <div class="exampleHolder">
+          <lightning-spinner alternative-text="Loading" size="medium" ></lightning-spinner>
+        </div>
+      </template>
+      <div class="slds-text-align_left">
+          <a style=" color:#D62311;" class="link -oneX-font-Mecherle -oneX-font--bold" href={label.AhBusinessPlanningLink} target="_blank" >Business Planning Plus</a>
+      </div>
+      </br>
+      <div class="slds-text-align_left">
+        <span>* - required</span>
+      </div>
+      </br>
+
+      <div class="slds-grid slds-grid_vertical">
+        <template if:true={isAgent}>
+                <div class="slds-col slds-size_2-of-12 slds-float_left slds-var-m-bottom_small">
+          <label for="agentName">{budgetAllInfoRec.BudgetAllAN}</label>
+            <lightning-input
+              type="text"
+              disabled="true"
+              variant="label-hidden"
+              data-name="agentName"
+              name="agentName"
+              label={budgetAllInfoRec.BudgetAllAN}
+              value={agentName}
+            ></lightning-input>
+          </div>
+        </template>
+          <div class="slds-col slds-size_2-of-12 slds-float_left slds-var-m-bottom_small ">
+            <template if:true={yearOptions.data}>
+              <label for="agentYear">* Year</label>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                id="agentYear"
+                data-name="agentYear"
+                name="agentYear"
+                variant="label-hidden"
+                label="Year"
+                placeholder="--Select--"
+                value={selectedYear}
+                onchange={handleYearChange}
+                options={yearOptions.data.values}>
+              </lightning-combobox>
+            </template>
+         </div>
+         </div>
+         <div class="slds-grid slds-gutters">
+          <div class="slds-col slds-size_3-of-12 slds-float_left slds-var-m-bottom_small ">
+            <template if:true={cmtOptions.data}>
+              <label for={budgetAllInfoRec.BudgetAllCMT}>* {budgetAllInfoRec.BudgetAllCMT}</label>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="cmt"
+                id={budgetAllInfoRec.BudgetAllCMT}
+                name="cmt"
+                placeholder="--Select--"
+                value={selectedCMT}
+                variant="label-hidden"
+                label={budgetAllInfoRec.BudgetAllCMT}
+                onchange={handleCMTChange}
+                options={cmtOptions.data.values}
+              >
+              </lightning-combobox>
+            </template>
+          </div>
+          <div class="slds-col slds-size_3-of-12 slds-float_left slds-var-m-bottom_small">
+            <label for={budgetAllInfoRec.BudgetAllGR}>* {budgetAllInfoRec.BudgetAllGR}</label>
+            <lightning-input
+                    type="number"
+                    data-name="bagr"
+                    name="bagr"
+                    id={budgetAllInfoRec.BudgetAllGR}
+                    variant="label-hidden"
+                    label={budgetAllInfoRec.BudgetAllGR}
+                    data-recordname={budgetAllInfoRec.BudgetAllGR}
+                    value={budgetAllocationData.Gross_Revenue__c}
+                    onchange={handleBudgetAlloc}
+                    aria-label={budgetAllInfoRec.BudgetAllGR}
+                  ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_3-of-12 slds-float_left slds-var-m-bottom_small ">
+            <label for={budgetAllInfoRec.BudgetAllBR}>* {budgetAllInfoRec.BudgetAllBR}</label>
+            <lightning-input
+            type="number"
+            id={budgetAllInfoRec.BudgetAllBR}
+            data-name="baor"
+            name="baor"
+            variant="label-hidden"
+            formatter="percent-fixed"
+            label={budgetAllInfoRec.BudgetAllBR}
+            data-recordname={budgetAllInfoRec.BudgetAllBR}
+            value={budgetAllocationData.Budget_Revenue_Percent__c}
+            onchange={handleBudgetAlloc}
+            aria-label={budgetAllInfoRec.BudgetAllBR}
+          ></lightning-input>
+          </div>
+          <div class="slds-col slds-size_3-of-12 slds-float_left slds-var-m-bottom_small ">
+            <label for={budgetAllInfoRec.BudgetAllAMB}>{budgetAllInfoRec.BudgetAllAMB}</label>
+            <lightning-input
+            type="number"
+            id={budgetAllInfoRec.BudgetAllAMB}
+            data-name="bamb"
+            name="bamb"
+            disabled="true"
+            label={budgetAllInfoRec.BudgetAllAMB}
+            variant="label-hidden"
+            data-recordname={budgetAllInfoRec.BudgetAllAMB}
+            value={budgetAllocationData.Agent_Marketing_Budget__c}
+            aria-label={budgetAllInfoRec.BudgetAllAMB}
+          ></lightning-input>
+          </div>
+        </div>  
+      
+    
+        <div style="width: 100%">
+          <c-ah-budget-tool-chart data-id="chart" onchartimagegenerated={handleChartImageGenerated}></c-ah-budget-tool-chart>
+
+        </div>
+        <div class="slds-grid">
+        <div class="slds-col slds-align_absolute-right slds-p-top_medium"></div>
+        <template if:true={isAgent}>
+          <input type="button" data-name="save" value="Save" title="Save" onclick={handleSave}
+          class="slds-button slds-button_destructive" />
+        </template>
+        <template if:true={isFSV}>
+          <button class="slds-button slds-button_destructive" data-id="clear" id="clearButton" onclick={handleClear}>Clear</button>
+        </template>
+        </div>
+      
+        
+        <div style="width: 100%">
+          <div class="accordion-controls">
+            <a href="javascript:void(0);" onclick={expandAll}>Expand All</a> | 
+            <a href="javascript:void(0);" onclick={collapseAll}> Collapse All</a>
+        </div>
+            <lightning-accordion active-section-name={activeSection} onsectiontoggle={handleSectionToggle} allow-multiple-sections-open >
+            <lightning-accordion-section label="Agent Brand" value="Agent Brand" name="agentBrand"   >
+              <template if:true={showAgentBrand}>
+                <c-ah-budget-tool-agent-brand
+                  budget-allocation-data={budgetAllocationData}
+                  budget-all-info-rec={budgetAllInfoRec}
+                  budget-t-t-c-map-rec={budgetTTCMapRec}
+                  budget-prc-dis-rec={budgetPrcDisRec}
+                  updated-agent-record={agentbrandrecord}
+                  onupdateagentbrand={handleUpdateAgentBrand}
+                  selected-year={selectedYear}
+                  data-name="agentBrand"
+                  data-id="AgentBrand"
+                ></c-ah-budget-tool-agent-brand>
+              </template>
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Create Opportunities" name="createOpportunity" value="Create Opportunities">
+              <template if:true={showCreateOpp}>
+                <c-ah-budget-tool-create-opportunities
+                  budget-allocation-data={budgetAllocationData}
+                  budget-all-info-rec={budgetAllInfoRec}
+                  budget-t-t-c-map-rec={budgetTTCMapRec}
+                  budget-prc-dis-rec={budgetPrcDisRec}
+                  updated-create-opportunity-record={createopportunityrecord}
+                  onupdatecreateopportunity={handleUpdateCreateOpportunity}
+                  data-name="createOpportunity"
+                  data-id="CreateOpportunity"
+                ></c-ah-budget-tool-create-opportunities>
+              </template>
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Convert Opportunities" name="convertOpportunity" value="Convert Opportunities" >
+              <template if:true={showConvertOpp}>
+                <c-ah-budget-tool-convert-opportunties
+                  budget-all-info-rec={budgetAllInfoRec}
+                  budget-allocation-data={budgetAllocationData}
+                  budget-prc-dis-rec={budgetPrcDisRec}
+                  updated-convert-opportunity-record={convertopportunityrecord}
+                  onupdateconvertopportunity={handleUpdateConvertOpportunity}
+                  data-name="convertOpportunity"
+                ></c-ah-budget-tool-convert-opportunties>
+              </template>
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Deepen Relationship" value="Deepen Relationship" name="deepenRelationship" >
+              <template if:true={showDeepenRel}>
+                <c-ah-budget-tool-deepen-relationships
+                  budget-all-info-rec={budgetAllInfoRec}
+                  budget-allocation-data={budgetAllocationData}
+                  budget-prc-dis-rec={budgetPrcDisRec}
+                  onupdatedeepenrelationship={handleUpdateDeepenRelationship}
+                  updated-deepen-relationship-record={deepenrelationshiprecord}
+                  data-name="deepenRelationship"
+                ></c-ah-budget-tool-deepen-relationships>
+              </template>
+            </lightning-accordion-section>
+            </lightning-accordion>
+        <table data-name="table3" class="slds-table slds-table_cell-buffer  slds-table_bordered slds-table_striped"
+          aria-describedby="Table to show values of budget total investment section">
+          <tbody>            
+            <tr class="slds-line-height_reset">
+              <td></td>
+              <td></td>
+              <td class="tableCellContent sectionTableHeader  slds-text-align_right">
+                {budgetAllInfoRec.BudgetAllTS}
+              </td>
+              <td class="tableCellContent sectionTableHeader slds-text-align_right">
+                {budgetAllInfoRec.BudgetAllSFS}
+              </td>
+              <td class="tableCellContent sectionTableHeader slds-text-align_right">
+                {budgetAllInfoRec.BudgetAllAAI}
+              </td>
+            </tr>
+            <tr class="slds-hint-parent">
+              <td data-label="Spec File" class="tableCellContent width50">
+                <div class="slds-cell-wrap">
+                  <strong>{budgetAllInfoRec.BudgetAllTI}</strong
+                  >
+                </div>
+              </td>
+              <td data-label="File Name" class="tableCellContent width10">
+                <div class="slds-cell-wrap"></div>
+              </td>
+              <td data-label="File Name" class="tableCellContent width15">
+                <div class="slds-cell-wrap textAlign">
+                  <lightning-formatted-number
+                    value={budgetAllocationData.Total_Investment_TS__c}
+                    format-style="currency"
+                    currency-code="USD"
+                  ></lightning-formatted-number>
+                </div>
+              </td>
+              <td data-label="File Type" class="tableCellContent width10">
+                <div class="slds-cell-wrap textAlign">
+                  <lightning-formatted-number
+                    value={budgetAllocationData.Total_Investment_SFS__c}
+                    format-style="currency"
+                    currency-code="USD"
+                  ></lightning-formatted-number>
+                </div>
+              </td>
+              <td data-label="File Extension" class="tableCellContent width20">
+                <div class="slds-cell-wrap textAlign">
+                  <lightning-formatted-number
+                    value={budgetAllocationData.Total_Investment_AAI__c}
+                    format-style="currency"
+                    currency-code="USD"
+                  ></lightning-formatted-number>
+                </div>
+              </td>
+            </tr>
+            <tr class="slds-hint-parent">
+              <td data-label="Spec File" class="tableCellContent">
+                <div class="slds-cell-wrap"> <strong>{budgetAllInfoRec.BudgetAllGRI}</strong></div>
+              </td>
+              <td data-label="Spec File" class="tableCellContent">
+                <div class="slds-cell-wrap"></div>
+              </td>
+              <td data-label="File Type" class="tableCellEmpty">
+                <div class="slds-cell-wrap"></div>
+              </td>
+              <td data-label="File Name" class="tableCellContent">
+                <div class="slds-cell-wrap">
+                 
+                </div>
+              </td>
+             
+              <td data-label="File Extension" class="tableCellContent">
+                <div class="slds-cell-wrap textAlign">
+                  <lightning-formatted-number
+                    value={budgetAllocationData.Gross_Revenue_Invested_Percent__c}
+                    format-style="percent"
+                    maximum-fraction-digits="2"
+                  ></lightning-formatted-number>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </br>
+      <div class="slds-grid">
+        <div class="slds-col slds-align_absolute-right slds-p-top_medium"></div>
+        <template if:true={isAgent}>
+                    <input type="button" data-name="save" value="Save" title="Save" onclick={handleSave}
+                class="slds-button slds-button_destructive" />
+        </template>
+        </div>
+  </template>
+  <template if:true={isAgent}>
+  <c-ah-unsaved-data-alert tabindex="-1"></c-ah-unsaved-data-alert>
+</template>
+</template>

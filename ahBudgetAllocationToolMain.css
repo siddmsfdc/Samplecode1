@@ -1,0 +1,69 @@
+.width45{
+    width:45%;
+}
+
+.width20{
+    width:20%;
+}
+
+.width10{
+    width:10%;
+}
+
+.width15{
+    width:15%;
+}
+
+.width50{
+    width:50%;
+}
+.width60{
+    width:60%;
+}
+
+.link{
+    color: #0000FF;
+    padding-top: 72px;
+}
+.textAlignCenter{
+    text-align: center;
+}
+.textAlign{
+    text-align: right;
+}
+.save-btn{
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+	margin: 8px auto 0;
+    padding: 0 40px;
+    width: fit-content !important;
+    border-radius: 28px;
+    border-color: #D62311;
+    background-color: #D62311;
+    height: 40px;
+    color: white;
+    border: solid 1px #D62311;
+}
+
+.save-btn:focus-visible {
+border-width: 6px !important;
+border-color: white !important;
+border: solid !important;
+}
+
+
+.budget-instruction-btn, .return-to-budget-btn{
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 600;
+	margin: 8px auto 0;
+    padding: 0 40px;
+    width: fit-content !important;
+    border-radius: 28px;
+    border-color: #D62311;
+    background-color: white;
+    height: 40px;
+    color: #D62311;
+    border: solid 1px #D62311;
+}
