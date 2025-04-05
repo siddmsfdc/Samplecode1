@@ -1,0 +1,540 @@
+<template>
+  <template if:true={agentBrandRecord}>
+    <p>{agentBrandRecord.Id}</p>
+    <button onclick={saveAgentBrand}>Save</button>
+  <table
+    class="slds-table slds-table_cell-buffer slds-table_striped"
+    aria-describedby="Table to show values of agent brand section">
+          <thead>
+            <tr class="slds-line-height_reset">
+              <th class="tableCellContent sectionTableHeader  slds-text-align_right" colspan="2"  scope="col">Quantity</th>
+              <th class="tableCellContent sectionTableHeader  slds-text-align_right"  scope="col">
+                {budgetAllInfoRec.BudgetAllTS}
+              </th>
+              <th class="tableCellContent sectionTableHeader slds-text-align_right" scope="col">
+                State Farm Subsidy
+              </th>
+              <th class="tableCellContent sectionTableHeader slds-text-align_right" scope="col">
+                Annual Agent Investment
+              </th>
+            </tr>
+          </thead>
+      <tbody>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File" class="tableCellContent width45">
+          <div class="slds-cell-wrap" data-name="admLabel1">Acquisition Direct Mail
+            <div style="float: right;" data-name="admLabel2">Monthly Lead Order</div>
+          </div>
+         
+        </td>
+        <td data-label="Spec File" class="tableCellContent width15">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              variant="label-hidden"
+              data-name="ADM__c"
+              name="adm"
+              data-recordname={budgetAllInfoRec.AgentBrandADM}
+              value={agentBrandRecord.ADM_input__c}
+              onchange={handleChange}
+              aria-label={budgetAllInfoRec.AgentBrandADM}
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Name" class="tableCellContent width15">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="admTotalSpend"
+              name="admTS"
+              formatter="currency"
+              variant="label-hidden"
+              disabled="true"
+              value={agentBrandRecord.ADM_TS__c}
+              data-recordname={budgetAllInfoRec.AgentBrandADM}
+              onchange={handleChange}
+              aria-label="Total Spend"
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type" class="tableCellContent">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="admSFSubsidy"
+              value={agentBrandRecord.ADM_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Type" class="tableCellContent">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="admAnnualAgtInvest"
+              value={agentBrandRecord.ADM_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">Agent Tagged Media</div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <template if:true={atmTSOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="Agent_Tagged_Media__c"
+                name="atmTS"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.atmTS}
+                data-recordname={budgetAllInfoRec.AgentBrandATM}
+                onchange={handleChange}
+                options={atmTSOptionsNew} aria-label="Agent Tagged media - Total spend"
+              ></lightning-combobox>
+            </template>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="atmSFSubsidy"
+              value={agentBrandRecord.ATM_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="atmAnnualAgtInvest"
+              value={agentBrandRecord.ATM_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap" data-name="atmatLabel1">
+            Additional Tactics   <div style="float: right;" data-name="atmatLabel2">Number at $1,000 increments</div>
+          </div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="Additional_Tactics"
+              name="atnTS"
+              variant="label-hidden"
+              value={agentBrandRecord.ATM_additional_tact_input__c}
+              data-recordname={budgetAllInfoRec.AgentBrandATMAT}
+              onchange={handleChange}
+              aria-label={budgetAllInfoRec.AgentBrandATMAT}
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="Additional_Agent_Tagged_Media_Tactic_TS__c"
+              name="aatmTS"
+              variant="label-hidden"
+              formatter="currency"
+              value={agentBrandRecord.ATM_additional_tact_TS__c}
+              disabled="true"
+              data-recordname={budgetAllInfoRec.AgentBrandATMAT}
+              aria-label={budgetAllInfoRec.AgentBrandATMAT}
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="atmTacticSFSubsidy"
+              value={agentBrandRecord.ATM_additional_tact_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="atmTacticAnnualAgtInvest"
+              value={agentBrandRecord.ATM_additional_tact_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">Proxy Agent Domain/M1 Site/M2 Site</div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <template if:true={m1STSOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="M1_Site"
+                name="m1STS"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.m1STS}
+                data-recordname={budgetAllInfoRec.AgentBrandM1Site}
+                onchange={handleChange}
+                options={m1STSOptionsNew}
+                aria-label="Proxy Agent Domain/M1 Site/M2 Site - Total Spend"
+              >
+              </lightning-combobox>
+            </template>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="m1SiteSubsidy"
+              value={agentBrandRecord.PrxAgntDomain_M1_M2_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="m1SiteAnnualAgtInvest"
+              value={agentBrandRecord.PrxAgntDomain_M1_M2_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">
+            Search Engine Optimization (if not using DAC)
+          </div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="SEO__c"
+              name="seoTS"
+              variant="label-hidden"
+              formatter="currency"
+              value={agentBrandRecord.SEO_TS__c}
+              data-recordname={budgetAllInfoRec.AgentBrandSEONotDAC}
+              onchange={handleChange}
+              aria-label="Search Engine Optimization (if not using DAC) - Total Spend"
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="seoSFSubsidy"
+              value={agentBrandRecord.SEO_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="seoAnnualAgtInvest"
+              value={agentBrandRecord.SEO_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">Search Engine Optimization (DAC Local Presence Mgmt.)</div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap">
+            <strong><label>Free</label></strong>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap"></div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">Social Media Advertising / Boosted Posts</div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="Boosted_Posts__c"
+              name="smaTS"
+              formatter="currency"
+              variant="label-hidden"
+              value={agentBrandRecord.Social_Media_Adv_TS__c}
+              data-recordname={budgetAllInfoRec.AgentBrandSMA}
+              onchange={handleChange}
+              aria-label="Social Media Advertising / Boosted Posts - Total Spend"
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="boostedSfSubsidy"
+              value={agentBrandRecord.Social_Media_Adv_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="boostedAnnualAgtInvest"
+              value={agentBrandRecord.Social_Media_Adv_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap" data-name="dmfaddLabel1">
+            Digital Marketing Fundamentals (Additional)   <div style="float: right;margin-top:-29px" data-name="dmfaddLabel2">Months </div><br />
+            <div style="float: right;"> Call Frequency</div>
+          </div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap lineHeight">
+            <template if:true={dmfMonthOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="dmfamonth"
+                name="dmfamonth"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.dmfamonth}
+                data-recordname={budgetAllInfoRec.AgentBrandDMFAdd}
+                onchange={handleDmfaTypeChange}
+                options={dmfMonthOptionsNew}
+                label={budgetAllInfoRec.AgentBrandDMFAdd}
+              >
+              </lightning-combobox
+              ><br />
+            </template>
+            <template if:true={dmfTypeOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="dmfaFreq"
+                name="dmfatype"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.dmfatype}
+                data-recordname={budgetAllInfoRec.AgentBrandDMFCall}
+                onchange={handleDmfaTypeChange}
+                options={dmfTypeOptionsNew}
+                label={budgetAllInfoRec.AgentBrandDMFCall}>
+              </lightning-combobox
+              ><br />
+            </template>
+          </div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              data-name="dmfaTS"
+              type="number"
+              name="dmfaTS"
+              formatter="currency"
+              disabled="true"
+              variant="label-hidden"
+              data-recordname={budgetAllInfoRec.AgentBrandDMFAdd}
+              value={agentBrandRecord.Digital_mkt_TS__c}
+              aria-label={budgetAllInfoRec.AgentBrandDMFAdd}
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="dmfSFSubsidy"
+              value={agentBrandRecord.Digital_mkt_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="dmfAnnualAgtInvest"
+              value={agentBrandRecord.Digital_mkt_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          
+          <div class="slds-cell-wrap" >Digital Content Program
+            <div style="float: right; margin-top:-29px;" >Months </div><br />
+          <div style="float: right;"> Type</div>
+        </div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap lineHeight">
+            <template if:true={dcpMonthOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="dcpmonth"
+                name="dcpmonth"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.dcpmonth}
+                data-recordname={budgetAllInfoRec.AgentBrandDCPMonth}
+                onchange={handleDCPChange}
+                options={dcpMonthOptionsNew}
+                aria-label={budgetAllInfoRec.AgentBrandDCPMonth}>
+              </lightning-combobox
+              ><br />
+            </template>
+            <template if:true={dcpOptionsNew}>
+              <lightning-combobox
+              dropdown-alignment="auto"
+                data-name="Digital_Content__c"
+                name="dcp"
+                variant="label-hidden"
+                placeholder="--Select--"
+                value={dropdownValues.dcp}
+                data-recordname={budgetAllInfoRec.AgentBrandDCP}
+                onchange={handleDCPChange}
+                options={dcpOptionsNew}
+                aria-label={budgetAllInfoRec.AgentBrandDCP}
+                label="DCP-Type">
+              </lightning-combobox
+              ><br />
+            </template>
+          </div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              data-name="totalSpendForDigitalContent"
+              type="number"
+              name="oohaTS"
+              variant="label-hidden"
+              formatter="currency"
+              disabled="true"
+              data-recordname={budgetAllInfoRec.AgentBrandDCP}
+              value={agentBrandRecord.Digital_Content_Prg_TS__c}
+              aria-label={budgetAllInfoRec.AgentBrandDCP}
+            ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="dcSfSubsidy"
+              value={agentBrandRecord.Digital_Content_Prg_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="dcAnnualAgtInvest"
+              value={agentBrandRecord.Digital_Content_Prg_AAI__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+      <tr class="slds-hint-parent">
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap">Other Branding</div>
+        </td>
+        <td data-label="Spec File">
+          <div class="slds-cell-wrap"></div>
+        </td>
+        <td data-label="File Name">
+          <div class="slds-cell-wrap lineHeight">
+            <lightning-input
+              type="number"
+              data-name="Other_Branding__c"
+              name="obTS"
+              variant="label-hidden"
+              formatter="currency"
+              data-recordname={budgetAllInfoRec.AgentBrandOB}
+              value={agentBrandRecord.Other_Branding_TS__c}
+              onchange={handleChange}
+              aria-label= "Other Branding - Total Spend"
+              ></lightning-input>
+          </div>
+        </td>
+        <td data-label="File Type">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="othBrdSFSubsidy"
+              value={agentBrandRecord.Other_Branding_SFS__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+        <td data-label="File Extension">
+          <div class="slds-cell-wrap textAlign">
+            <lightning-formatted-number
+              data-name="othAnnualAgtInvest"
+              value={agentBrandRecord.Other_Branding_Agent_Annual_Investment__c}
+              format-style="currency"
+              currency-code="USD"
+            ></lightning-formatted-number>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</template>
+</template>
